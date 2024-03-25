@@ -12,22 +12,29 @@ const float accelsensitivity = 16384.00;
 const float Rho = 1000; // satuan Kg/m^3
 const float grav = 9.8; // Satuan m/s^2
 
+double depthInput, depthOutput;
 double yawInput, yawOutput;
 double pInput, pOutput;
 double yawSetpoint; //dalam derajat (sudut)
 double pSetpoint;
+double dSetpoint;
 double Kp = 0.0;
 double Ki = 0.0;
 double Kd = 0.0;
 
-char command;
+int brushAwal;
+float brush3;
+float brush4;
+float brush5;
+float brush6;
 
-Servo myMotor;
+Servo motor1, motor2, motor3, motor4, motor5, motor6;
 Madgwick filter;
 MPU6050 accelgyro;
 HMC5883L mag;
 PID yawPID(&yawInput, &yawOutput, &yawSetpoint, Ki, Kp, Kd, DIRECT);
 PID pitchPID(&pInput, &pOutput, &pSetpoint, Ki, Kp, Kd, DIRECT);
+PID DepthPID(&depthInput, &depthOutput, &dSetpoint, Ki, Kp, Kd, DIRECT);
 
 int16_t ax, ay, az;
 float accX, accY, accZ;
@@ -41,6 +48,7 @@ float depth;
 
 void setup(){
   Serial.begin(115200);
+  setup_motor();
   filter.begin(20);
   Wire.begin();
   setup_pid();
@@ -50,6 +58,7 @@ void setup(){
 
 }
 void loop(){
+  gerak();
   unsigned long microsNow;
   microsNow = micros();
  if (microsNow - microsPrevious >= microsPerReading) {
@@ -80,7 +89,5 @@ void loop(){
 
     microsPrevious = microsPrevious + microsPerReading;
  }
-
-
 
 }
