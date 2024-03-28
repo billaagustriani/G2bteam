@@ -1,6 +1,6 @@
 void setup_motor(){
   motor1.attach(19);
-  motor2.attach(0);
+  motor2.attach(2);
   motor3.attach(4);
   motor4.attach(18);
   motor5.attach(5);
